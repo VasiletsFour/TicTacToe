@@ -1,42 +1,52 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
-import 'react-native-gesture-handler';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
-import {GameScreen } from "./screens/GameScreen";
+import { DarkTheme, NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
+import { ActivityIndicator } from "react-native";
+import "react-native-gesture-handler";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import useCachedResources from "./hooks/useCachedResources";
+import { GameScreen } from "./screens/GameScreen";
+import { MenuScreen } from "./screens/MenuScreen";
 
-
-const Stack = createStackNavigator()
+const Stack = createStackNavigator();
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
 
   if (!isLoadingComplete) {
-    return null;
+    return <ActivityIndicator size="large" color="#00ff00" />;
   } else {
     return (
       <SafeAreaProvider>
-        <NavigationContainer>
+        <NavigationContainer theme={DarkTheme}>
           <Stack.Navigator>
             <Stack.Screen
-              name="Exit"
-              component={GameScreen}
+              name="Menu"
+              component={MenuScreen}
               options={{
-                title: 'Exit',
-                headerStyle: {
-                  backgroundColor: '#000000',
-                },
-                headerTintColor: '#fff',
+                title: "Menu",
+                headerTintColor: "#fff",
                 headerTitleStyle: {
-                  fontSize: 30
+                  fontSize: 30,
                 },
               }}
             />
-            </Stack.Navigator>
-            </NavigationContainer>
+            <Stack.Screen
+              name="Game"
+              component={GameScreen}
+              options={{
+                title: "Game",
+                headerStyle: {
+                  backgroundColor: "#000000",
+                },
+                headerTintColor: "#fff",
+                headerTitleStyle: {
+                  fontSize: 30,
+                },
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
       </SafeAreaProvider>
     );
   }
