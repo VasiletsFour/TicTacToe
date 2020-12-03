@@ -7,6 +7,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import useCachedResources from "./hooks/useCachedResources";
 import { GameScreen } from "./screens/GameScreen";
 import { MenuScreen } from "./screens/MenuScreen";
+import { SettingScreen } from "./screens/SettingScreen";
 
 const Stack = createStackNavigator();
 
@@ -23,27 +24,17 @@ export default function App() {
             <Stack.Screen
               name="Menu"
               component={MenuScreen}
-              options={{
-                title: "Menu",
-                headerTintColor: "#fff",
-                headerTitleStyle: {
-                  fontSize: 30,
-                },
-              }}
+              options={options}
             />
             <Stack.Screen
               name="Game"
               component={GameScreen}
-              options={{
-                title: "Game",
-                headerStyle: {
-                  backgroundColor: "#000000",
-                },
-                headerTintColor: "#fff",
-                headerTitleStyle: {
-                  fontSize: 30,
-                },
-              }}
+              options={options}
+            />
+            <Stack.Screen
+              name="Setting"
+              component={SettingScreen}
+              options={options}
             />
           </Stack.Navigator>
         </NavigationContainer>
@@ -51,3 +42,11 @@ export default function App() {
     );
   }
 }
+
+const options = {
+  title: "TicTocToe",
+  headerTintColor: "#fff",
+  headerTitleStyle: {
+    fontSize: 30,
+  },
+};

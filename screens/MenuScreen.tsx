@@ -10,8 +10,22 @@ interface Props {
 export const MenuScreen = ({ navigation }: Props) => {
   return (
     <View style={styles.container}>
-      <MenuLabel text="Start game" navigation={navigation} nextSrceen="Game" />
-      <MenuLabel text="Settings" navigation={navigation} nextSrceen="Setting" />
+      <View style={styles.wrppaer}>
+        <MenuLabel
+          text="Start game"
+          navigation={navigation}
+          nextSrceen="Game"
+          icon="caretright"
+        />
+      </View>
+      <View style={styles.wrppaer}>
+        <MenuLabel
+          text="Settings"
+          navigation={navigation}
+          nextSrceen="Setting"
+          icon="setting"
+        />
+      </View>
     </View>
   );
 };
@@ -23,7 +37,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#00000",
-    paddingLeft: 540,
-    paddingRight: 540,
+  },
+  wrppaer: {
+    backgroundColor: "#00000",
+    width: "40%",
+    height: "80%",
+    marginLeft: 20,
+    marginRight: 20,
   },
 });

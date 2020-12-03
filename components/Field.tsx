@@ -20,9 +20,9 @@ export const Field = ({ title, handelPress }: Props) => (
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "red",
-    width: 100,
-    height: 100,
+    backgroundColor: "white",
+    width: 150,
+    height: 150,
     marginTop: 5,
     marginBottom: 5,
     marginLeft: 5,
@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
     width: 100,
   },
   text: {
-    fontSize: 60,
-    textAlign: "center",
+    marginTop: 20,
+    marginLeft: 40,
+    fontSize: 80,
   },
 });
