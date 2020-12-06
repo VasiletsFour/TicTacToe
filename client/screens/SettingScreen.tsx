@@ -1,12 +1,11 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
-import { Game } from "../components/Game";
-import { View } from "../components/Themed";
+import { Text, View } from "../components/Themed";
 
-export const GameScreen = () => {
+export const SettingScreen = () => {
   return (
     <View style={styles.container}>
-      <Game />
+      <Text>Work</Text>
     </View>
   );
 };
