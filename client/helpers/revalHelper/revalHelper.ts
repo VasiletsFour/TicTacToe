@@ -1,8 +1,12 @@
 import { winHelper } from "../winHelper/winHelper";
 
-export const rivalHelper = (arr: Array<string>, type: string, step: number) => {
+export const rivalHelper = (arr: Array<string>, type:"X"|"O", step: number) => {
     const rivalType = type === "X" ? "O" : "X";
-  
+    
+    if(rivalType === "X" && emptyArr(arr)){
+      return arr[4] =rivalType
+    }
+
     //   if (type === "X") {
     //     !arr[0] &&
     //       arr[4] === type &&
@@ -27,7 +31,7 @@ export const rivalHelper = (arr: Array<string>, type: string, step: number) => {
     //     arr[4] === type && random(0, 2);
   
     if (step < 9) {
-      random(0, 8);
+      random(0, 8)
     }
     winHelper(step, arr, type);
     // }
@@ -42,3 +46,11 @@ export const rivalHelper = (arr: Array<string>, type: string, step: number) => {
       }
     }
 };
+
+const emptyArr =(arr:Array<string>)=>{
+  for(let i=0; i<=arr.length-1;i++){
+    if(!arr[i]) return false
+  }
+
+  return true
+}

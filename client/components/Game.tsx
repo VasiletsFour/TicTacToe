@@ -8,13 +8,13 @@ export const Game = () => {
   const type = "X";
   const [yourRun, setYourRun] = useState(type === "X" ? true : false);
   const [step, setStep] = useState(0);
-  const [data, setData] = useState(new Array(9));
+  const [result, setResult] = useState(new Array(9));
 
   useEffect(() => {
     setStep(step + 1);
 
     if (!yourRun) {
-      rivalHelper(data, type, step);
+      setTimeout(rivalHelper(result, type, step), 221000);
       setYourRun(!yourRun);
     }
   }, [yourRun]);
@@ -22,15 +22,15 @@ export const Game = () => {
   const getItem = () => {
     const arrFieldHtml = new Array();
 
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < result.length; i++) {
       arrFieldHtml.push(
         <Field
           key={i + " key"}
-          title={data[i] || ""}
+          title={result[i] || ""}
           handelPress={() => {
-            if (!data[i]) {
-              data[i] = type;
-              setData(data);
+            if (!result[i]) {
+              result[i] = type;
+              setResult(result);
               setYourRun(!yourRun);
             } else {
               alert("check another field");
@@ -55,11 +55,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "black",
+    backgroundColor: "#ccdffd",
     width: "100%",
     height: "100%",
   },
   wrapper: {
+    overflow: "hidden",
+    borderRadius: 20,
     position: "absolute",
     flex: 1,
     flexDirection: "row",
@@ -68,6 +70,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "black",
     width: 500,
-    height: 500,
+    height: 550,
   },
 });

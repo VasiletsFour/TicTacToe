@@ -11,7 +11,11 @@ export const Field = ({ title, handelPress }: Props) => (
     <Pressable onPress={handelPress}>
       {({ pressed }) => (
         <View style={styles.element}>
-          <Text style={styles.text}>{pressed ? "-" : title}</Text>
+          <Text
+            style={pressed ? styles.press : title === "X" ? styles.x : styles.o}
+          >
+            {pressed ? "-" : title}
+          </Text>
         </View>
       )}
     </Pressable>
@@ -23,18 +27,28 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     width: 150,
     height: 150,
-    marginTop: 5,
-    marginBottom: 5,
-    marginLeft: 5,
-    marginRight: 5,
+    margin: 5,
+    cursor: "pointer",
   },
   element: {
     height: 100,
     width: 100,
   },
-  text: {
-    marginTop: 20,
+  press: {
+    color: "black",
+    marginLeft: 50,
+    marginBottom: 20,
+    fontSize: 120,
+    padding: 0,
+  },
+  x: {
+    color: "red",
     marginLeft: 40,
-    fontSize: 80,
+    fontSize: 120,
+  },
+  o: {
+    color: "blue",
+    marginLeft: 40,
+    fontSize: 120,
   },
 });
