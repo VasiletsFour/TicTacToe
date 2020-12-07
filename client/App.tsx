@@ -8,6 +8,7 @@ import useCachedResources from "./hooks/useCachedResources";
 import { GameScreen } from "./screens/GameScreen";
 import { MenuScreen } from "./screens/MenuScreen";
 import { SettingScreen } from "./screens/SettingScreen";
+import { GameSettingScreen } from "./screens/GameSettingScreen";
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,11 @@ export default function App() {
             <Stack.Screen
               name="Menu"
               component={MenuScreen}
+              options={options}
+            />
+            <Stack.Screen
+              name="GameSetting"
+              component={GameSettingScreen}
               options={options}
             />
             <Stack.Screen

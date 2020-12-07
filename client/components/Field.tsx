@@ -1,13 +1,14 @@
 import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View, ViewStyle } from "react-native";
 
 interface Props {
   title: string | number;
   handelPress: () => void;
+  style: ViewStyle;
 }
 
-export const Field = ({ title, handelPress }: Props) => (
-  <View style={styles.container}>
+export const Field = ({ title, handelPress, style }: Props) => (
+  <View style={[style, styles.container]}>
     <Pressable onPress={handelPress}>
       {({ pressed }) => (
         <View style={styles.element}>
@@ -24,31 +25,31 @@ export const Field = ({ title, handelPress }: Props) => (
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: "black",
     width: 150,
     height: 150,
-    margin: 5,
-    cursor: "pointer",
   },
   element: {
     height: 100,
     width: 100,
   },
   press: {
-    color: "black",
+    color: "white",
     marginLeft: 50,
-    marginBottom: 20,
-    fontSize: 120,
+    marginBottom: 40,
+    fontSize: 100,
     padding: 0,
   },
   x: {
     color: "red",
     marginLeft: 40,
-    fontSize: 120,
+    marginBottom: 30,
+    fontSize: 100,
   },
   o: {
     color: "blue",
     marginLeft: 40,
-    fontSize: 120,
+    marginBottom: 30,
+    fontSize: 100,
   },
 });

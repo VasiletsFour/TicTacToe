@@ -14,7 +14,7 @@ export const Game = () => {
     setStep(step + 1);
 
     if (!yourRun) {
-      setTimeout(rivalHelper(result, type, step), 221000);
+      rivalHelper(result, type, step);
       setYourRun(!yourRun);
     }
   }, [yourRun]);
@@ -27,6 +27,7 @@ export const Game = () => {
         <Field
           key={i + " key"}
           title={result[i] || ""}
+          style={fieldStyle(i)}
           handelPress={() => {
             if (!result[i]) {
               result[i] = type;
@@ -50,12 +51,31 @@ export const Game = () => {
   );
 };
 
+const fieldStyle = (i: number) => {
+  let fieldStyle: any = [];
+
+  if (i < 6) {
+    fieldStyle.push(styles.borderBottom);
+  }
+  if (i > 2) {
+    fieldStyle.push(styles.borderTop);
+  }
+  if (i != 2 && i != 5 && i != 8) {
+    fieldStyle.push(styles.borderRight);
+  }
+  if (i != 0 && i != 3 && i != 6) {
+    fieldStyle.push(styles.borderLeft);
+  }
+
+  return fieldStyle;
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#ccdffd",
+    backgroundColor: "black",
     width: "100%",
     height: "100%",
   },
@@ -68,8 +88,25 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "black",
-    width: 500,
+    backgroundColor: "white",
+    width: 550,
     height: 550,
+    padding: 50,
+  },
+  borderTop: {
+    borderTopColor: "green",
+    borderTopWidth: 2,
+  },
+  borderBottom: {
+    borderBottomColor: "green",
+    borderBottomWidth: 2,
+  },
+  borderLeft: {
+    borderLeftColor: "green",
+    borderLeftWidth: 2,
+  },
+  borderRight: {
+    borderRightColor: "green",
+    borderRightWidth: 2,
   },
 });

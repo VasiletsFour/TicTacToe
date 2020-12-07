@@ -14,7 +14,7 @@ export const MenuScreen = ({ navigation }: Props) => {
         <MenuLabel
           text="Start game"
           navigation={navigation}
-          nextSrceen="Game"
+          nextSrceen="GameSetting"
           icon="caretright"
         />
       </View>
