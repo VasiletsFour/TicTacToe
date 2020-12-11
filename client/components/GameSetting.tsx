@@ -1,37 +1,52 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
+import { GameSettinTab } from "./GameSettingsTab";
 
-export const GameSetting = () => {
+interface Props {
+  navigation: any;
+}
+
+export const GameSetting = ({ navigation }: Props) => {
   const [gameType, setGameType] = useState<"single" | "multiplay">("single");
   const [type, setType] = useState<"X" | "O" | "Any">("X");
 
   const handelStart = () => {
-    alert("start");
+    navigation.navigate("Game", { gameType, type: type });
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Game Setting</Text>
       <View style={styles.block}>
-        <View style={gameType === "single" ? styles.activate : styles.element}>
-          <Text style={styles.text}>Single</Text>
-        </View>
-        <View style={gameType !== "single" ? styles.activate : styles.element}>
-          <Text style={styles.text}>Multiplay</Text>
-        </View>
+        <GameSettinTab
+          style={gameType === "single" ? styles.activate : styles.element}
+          handelPress={() => setGameType("single")}
+          text="Single"
+        />
+        <GameSettinTab
+          style={gameType !== "single" ? styles.activate : styles.element}
+          handelPress={() => setGameType("multiplay")}
+          text="Multiplay"
+        />
       </View>
       <View>
         <View style={styles.block}>
-          <View style={type === "X" ? styles.activate : styles.element}>
-            <Text style={styles.text}>X</Text>
-          </View>
-          <View style={type === "O" ? styles.activate : styles.element}>
-            <Text style={styles.text}>O</Text>
-          </View>
-          {gameType && (
-            <View style={type === "Any" ? styles.activate : styles.element}>
-              <Text style={styles.text}>Any</Text>
-            </View>
+          <GameSettinTab
+            style={type === "X" ? styles.activate : styles.element}
+            handelPress={() => setType("X")}
+            text="X"
+          />
+          <GameSettinTab
+            style={type === "O" ? styles.activate : styles.element}
+            handelPress={() => setType("O")}
+            text="O"
+          />
+          {gameType === "multiplay" && (
+            <GameSettinTab
+              style={type === "Any" ? styles.activate : styles.element}
+              handelPress={() => setType("Any")}
+              text="Any"
+            />
           )}
         </View>
       </View>
@@ -68,7 +83,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: "red",
+    borderColor: "green",
     borderRadius: 20,
     width: 120,
     height: 160,
@@ -86,10 +101,6 @@ const styles = StyleSheet.create({
     height: 160,
     marginLeft: 20,
     marginRight: 20,
-  },
-  text: {
-    color: "white",
-    fontSize: 20,
   },
   btnConteiner: {
     marginTop: 30,

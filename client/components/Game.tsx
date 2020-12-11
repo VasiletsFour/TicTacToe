@@ -4,8 +4,12 @@ import { rivalHelper } from "../helpers/revalHelper/revalHelper";
 import { Field } from "./Field";
 import { View } from "./Themed";
 
-export const Game = () => {
-  const type = "X";
+interface Props {
+  route: any;
+}
+
+export const Game = ({ route }: Props) => {
+  const { type, gameType } = route.params;
   const [yourRun, setYourRun] = useState(type === "X" ? true : false);
   const [step, setStep] = useState(0);
   const [result, setResult] = useState(new Array(9));

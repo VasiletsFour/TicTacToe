@@ -3,10 +3,14 @@ import { StyleSheet } from "react-native";
 import { GameSetting } from "../components/GameSetting";
 import { View } from "../components/Themed";
 
-export const GameSettingScreen = () => {
+interface Props {
+  navigation: any;
+}
+
+export const GameSettingScreen = ({ navigation }: Props) => {
   return (
     <View style={styles.container}>
-      <GameSetting />
+      <GameSetting navigation={navigation} />
     </View>
   );
 };
