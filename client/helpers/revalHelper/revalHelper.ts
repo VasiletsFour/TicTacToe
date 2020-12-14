@@ -4,58 +4,69 @@ import { Field } from "../../components/Game";
 export const rivalHelper = (
   arr: Array<Field>,
   type: "X" | "O",
-  step: number
+  step: number,
+  level: string
 ) => {
   const rivalType = type === "X" ? "O" : "X";
-
-  if (rivalType === "X" && emptyArr(arr)) {
-    return (arr[4].value = rivalType);
-  }
-
-  //   if (type === "X") {
-  //     !arr[0] &&
-  //       arr[4] === type &&
-  //       arr[6] === type &&
-  //       arr[1] === rivalType &&
-  //       (arr[2] = rivalType);
-
-  //     arr[0] === type &&
-  //       arr[4] === type &&
-  //       arr[6] === type &&
-  //       arr[1] === rivalType &&
-  //       (arr[3] = rivalType);
-
-  //     !arr[4] && random(0, 4);
-
-  //     arr[4] === type && arr[2] === type && (arr[6] = rivalType);
-
-  //     arr[4] === type && arr[2] === type && (arr[5] = rivalType);
-
-  //     arr[4] === type && arr[2] === type && (arr[6] = rivalType);
-
-  //     arr[4] === type && random(0, 2);
-
   if (step < 9) {
-    random(0, 8);
+    level === "easy" && easyLevel(0, 8, arr, rivalType);
+    level === "medium" && mediumLevel(arr, rivalType);
+    level === "hard" && alert("Hard");
   }
   winHelper(step, arr, type);
   // }
+};
 
-  function random(min: number, max: number) {
-    const randomNum = Math.floor(Math.random() * (max - min) + min);
+const easyLevel = (
+  min: number,
+  max: number,
+  arr: Array<Field>,
+  rivalType: string
+) => {
+  const randomNum = random(max, min);
 
-    if (!arr[randomNum].value) {
-      arr[randomNum].value = rivalType;
-    } else {
-      random(min, max);
+  if (!arr[randomNum].value) {
+    arr[randomNum].value = rivalType;
+  } else {
+    easyLevel(min, max, arr, rivalType);
+  }
+};
+
+const mediumLevel = (arr: Array<Field>, rivalType: string) => {
+  const randomNum = random(1, 0);
+
+  if(oneStepToVictory(arr,rivalType)){
+    return null
+  }
+
+  if (randomNum && arr[4].value) {
+    arr[4].value = rivalType;
+  } else {
+    for (let i = 1; i <= arr.length - 1; i += 2) {
+      if (!arr[i].value) {
+        arr[i].value = rivalType;
+        break
+      } else if (arr[i].value === rivalType && arr[i + 2].value === rivalType) {
+        arr[i + 1].value = rivalType;
+        break
+      }else{
+        easyLevel(0,8,arr, rivalType) 
+        break
+      }
     }
   }
 };
 
-const emptyArr = (arr: Array<Field>) => {
-  for (let i = 0; i <= arr.length - 1; i++) {
-    if (!arr[i].value) return false;
+const oneStepToVictory =(arr:Array<Field>, rivalType:string)=>{
+  for(let i =0; i<=arr.length-1;i++){
+    if(arr[i].value === rivalType && arr[i]===arr[i+1]){
+      arr[i+2].value = rivalType
+
+      return true
+    }
   }
 
-  return true;
-};
+  return false
+}
+
+const random = (min: number, max: number) =>Math.floor(Math.random() * (max - min) + min);

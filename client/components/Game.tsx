@@ -26,7 +26,7 @@ export const Game = ({ route }: Props) => {
     setStep(step + 1);
 
     if (!yourRun) {
-      rivalHelper(result, type, step);
+      rivalHelper(result, type, step, level);
       setYourRun(!yourRun);
     }
   }, [yourRun]);

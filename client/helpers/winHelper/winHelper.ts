@@ -1,10 +1,6 @@
 import {Field  } from "../../components/Game";
 
 export const winHelper = (step: number, arr: Array<Field>, type: string) => {
-  if (step === 9) {
-    return alert("game over: Draw");
-  }
-
   if (step > 4) {
     for (let i = 0; i <= arr.length - 1; i += 3) {
       if (arr[i].value === arr[i + 1].value && arr[i].value === arr[i + 2].value && arr[i].value) {
@@ -27,6 +23,10 @@ export const winHelper = (step: number, arr: Array<Field>, type: string) => {
 
       k-=2
     }
+  }
+
+  if (step === 9) {
+    return alert("game over: Draw");
   }
 };
 
