@@ -1,26 +1,28 @@
-export const winHelper = (step: number, arr: Array<string>, type: string) => {
+import {Field  } from "../../components/Game";
+
+export const winHelper = (step: number, arr: Array<Field>, type: string) => {
   if (step === 9) {
     return alert("game over: Draw");
   }
 
   if (step > 4) {
     for (let i = 0; i <= arr.length - 1; i += 3) {
-      if (arr[i] === arr[i + 1] && arr[i] === arr[i + 2] && arr[i]) {
-        return handelWinner(type, arr[i])
+      if (arr[i].value === arr[i + 1].value && arr[i].value === arr[i + 2].value && arr[i].value) {
+        return handelWinner(type, arr[i].value)
       }
     }
 
     for (let i = 0; i <= 2; i++) {
-      if (arr[i] === arr[i + 3] && arr[i] === arr[i + 6] && arr[i]) {
-        return handelWinner(type, arr[i])
+      if (arr[i].value === arr[i + 3].value && arr[i].value === arr[i + 6].value && arr[i].value) {
+        return handelWinner(type, arr[i].value)
       }
     }
 
     for (let i = 0; i <=2 ; i+=2) {
       let k = 4
 
-      if (arr[i] === arr[i + k] && arr[i] === arr[i + k +k] && arr[i]) {
-        return handelWinner(type, arr[i])
+      if (arr[i].value === arr[i + k].value && arr[i].value === arr[i + k +k].value && arr[i].value) {
+        return handelWinner(type, arr[i].value)
       }
 
       k-=2

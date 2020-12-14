@@ -8,10 +8,11 @@ interface Props {
 
 export const GameSetting = ({ navigation }: Props) => {
   const [gameType, setGameType] = useState<"single" | "multiplay">("single");
+  const [level, setLevel] = useState<"easy" | "medium" | "hard">("easy");
   const [type, setType] = useState<"X" | "O" | "Any">("X");
 
   const handelStart = () => {
-    navigation.navigate("Game", { gameType, type: type });
+    navigation.navigate("Game", { gameType, type, level });
   };
 
   return (
@@ -29,6 +30,25 @@ export const GameSetting = ({ navigation }: Props) => {
           text="Multiplay"
         />
       </View>
+      {gameType === "single" && (
+        <View style={styles.block}>
+          <GameSettinTab
+            style={level === "easy" ? styles.activate : styles.element}
+            handelPress={() => setLevel("easy")}
+            text="Easy"
+          />
+          <GameSettinTab
+            style={level === "medium" ? styles.activate : styles.element}
+            handelPress={() => setLevel("medium")}
+            text="Medium"
+          />
+          <GameSettinTab
+            style={level === "hard" ? styles.activate : styles.element}
+            handelPress={() => setLevel("hard")}
+            text="Hard"
+          />
+        </View>
+      )}
       <View>
         <View style={styles.block}>
           <GameSettinTab

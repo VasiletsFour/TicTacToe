@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { rivalHelper } from "../helpers/revalHelper/revalHelper";
+import { getItem } from "../helpers/createFieldHelper/CreateFieldHelper";
 import { Field } from "./Field";
 import { View } from "./Themed";
 
@@ -8,11 +9,18 @@ interface Props {
   route: any;
 }
 
+export interface Field {
+  row: number;
+  col: number;
+  index: number;
+  value: string;
+}
+
 export const Game = ({ route }: Props) => {
-  const { type, gameType } = route.params;
+  const { type, gameType, level } = route.params;
   const [yourRun, setYourRun] = useState(type === "X" ? true : false);
   const [step, setStep] = useState(0);
-  const [result, setResult] = useState(new Array(9));
+  const [result, setResult] = useState(getItem());
 
   useEffect(() => {
     setStep(step + 1);
@@ -23,52 +31,40 @@ export const Game = ({ route }: Props) => {
     }
   }, [yourRun]);
 
-  const getItem = () => {
-    const arrFieldHtml = new Array();
-
-    for (let i = 0; i < result.length; i++) {
-      arrFieldHtml.push(
-        <Field
-          key={i + " key"}
-          title={result[i] || ""}
-          style={fieldStyle(i)}
-          handelPress={() => {
-            if (!result[i]) {
-              result[i] = type;
-              setResult(result);
-              setYourRun(!yourRun);
-            } else {
-              alert("check another field");
-            }
-          }}
-        />
-      );
-    }
-
-    return arrFieldHtml;
-  };
-
   return (
     <View style={styles.container}>
-      <View style={styles.wrapper}>{getItem()}</View>
+      <View style={styles.wrapper}>
+        {result.map((item: Field) => {
+          return (
+            <Field
+              key={item.index + " key"}
+              title={item.value}
+              style={fieldStyle(item.row, item.col)}
+              handelPress={() => {
+                if (!item.value) {
+                  item.value = type;
+                  setResult(result);
+                  setYourRun(!yourRun);
+                } else {
+                  alert("check another field");
+                }
+              }}
+            />
+          );
+        })}
+      </View>
     </View>
   );
 };
 
-const fieldStyle = (i: number) => {
+const fieldStyle = (row: number, col: number) => {
   let fieldStyle: any = [];
 
-  if (i < 6) {
-    fieldStyle.push(styles.borderBottom);
-  }
-  if (i > 2) {
-    fieldStyle.push(styles.borderTop);
-  }
-  if (i != 2 && i != 5 && i != 8) {
+  if (row != 2) {
     fieldStyle.push(styles.borderRight);
   }
-  if (i != 0 && i != 3 && i != 6) {
-    fieldStyle.push(styles.borderLeft);
+  if (col != 2) {
+    fieldStyle.push(styles.borderBottom);
   }
 
   return fieldStyle;
@@ -92,7 +88,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "white",
+    backgroundColor: "black",
     width: 550,
     height: 550,
     padding: 50,
