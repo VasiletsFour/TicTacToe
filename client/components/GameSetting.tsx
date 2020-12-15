@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
+import { getIpHelper } from "../helpers/getIpHelper/getIpHelper";
+import { newUserSocket } from "../socket/socket";
 import { GameSettinTab } from "./GameSettingsTab";
 
 interface Props {
@@ -12,7 +14,11 @@ export const GameSetting = ({ navigation }: Props) => {
   const [type, setType] = useState<"X" | "O" | "Any">("X");
 
   const handelStart = () => {
-    navigation.navigate("Game", { gameType, type, level });
+    if (gameType === "single") {
+      navigation.navigate("Game", { gameType, type, level });
+    } else {
+      getIpHelper().then((data: any) => newUserSocket(data.ip, type));
+    }
   };
 
   return (

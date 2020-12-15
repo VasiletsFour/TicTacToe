@@ -5,12 +5,13 @@ import { View } from "../components/Themed";
 
 interface Props {
   route: any;
+  navigation: any;
 }
 
-export const GameScreen = ({ route }: Props) => {
+export const GameScreen = ({ route, navigation }: Props) => {
   return (
     <View style={styles.container}>
-      <Game route={route} />
+      <Game route={route} navigation={navigation} />
     </View>
   );
 };

@@ -1,4 +1,3 @@
-import { winHelper } from "../winHelper/winHelper";
 import { Field } from "../../components/Game";
 
 export const rivalHelper = (
@@ -13,8 +12,6 @@ export const rivalHelper = (
     level === "medium" && mediumLevel(arr, rivalType);
     level === "hard" && alert("Hard");
   }
-  winHelper(step, arr, type);
-  // }
 };
 
 const easyLevel = (
@@ -34,24 +31,22 @@ const easyLevel = (
 
 const mediumLevel = (arr: Array<Field>, rivalType: string) => {
   const randomNum = random(1, 0);
-
-  if(oneStepToVictory(arr,rivalType)){
-    return null
-  }
+  // if(oneStepToVictory(arr,rivalType)){
+  //   return null
+  // }
 
   if (randomNum && arr[4].value) {
-    arr[4].value = rivalType;
+    return arr[4].value = rivalType;
   } else {
     for (let i = 1; i <= arr.length - 1; i += 2) {
+     
       if (!arr[i].value) {
-        arr[i].value = rivalType;
-        break
-      } else if (arr[i].value === rivalType && arr[i + 2].value === rivalType) {
-        arr[i + 1].value = rivalType;
-        break
+        return arr[i].value = rivalType;
+      } 
+      if (arr[i].value === rivalType && arr[i + 2].value === rivalType) {
+        return arr[i - 1].value = rivalType;
       }else{
-        easyLevel(0,8,arr, rivalType) 
-        break
+        return easyLevel(0,8,arr, rivalType) 
       }
     }
   }

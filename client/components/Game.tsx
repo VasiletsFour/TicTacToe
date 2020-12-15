@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { rivalHelper } from "../helpers/revalHelper/revalHelper";
-import { getItem } from "../helpers/createFieldHelper/CreateFieldHelper";
+import { getItem } from "../helpers/createField/CreateFieldHelper";
+import { winHelper } from "../helpers/winHelper/winHelper";
 import { Field } from "./Field";
 import { View } from "./Themed";
+import { ResultPoup } from "../components/ResultPoup";
 
 interface Props {
   route: any;
+  navigation: any;
 }
 
 export interface Field {
@@ -16,18 +19,32 @@ export interface Field {
   value: string;
 }
 
-export const Game = ({ route }: Props) => {
+export const Game = ({ route, navigation }: Props) => {
   const { type, gameType, level } = route.params;
   const [yourRun, setYourRun] = useState(type === "X" ? true : false);
   const [step, setStep] = useState(0);
   const [result, setResult] = useState(getItem());
+  const [winner, setWinner] = useState(false);
+  const [typeWinner, setTypeWinner] = useState("");
 
   useEffect(() => {
-    setStep(step + 1);
+    if (!winner) {
+      setStep(step + 1);
 
-    if (!yourRun) {
-      rivalHelper(result, type, step, level);
-      setYourRun(!yourRun);
+      if (step > 4) {
+        winHelper(
+          step,
+          result,
+          type,
+          () => setWinner(!winner),
+          (type: string) => setTypeWinner(type)
+        );
+      }
+
+      if (!yourRun && !winner) {
+        rivalHelper(result, type, step, level);
+        setYourRun(!yourRun);
+      }
     }
   }, [yourRun]);
 
@@ -53,6 +70,7 @@ export const Game = ({ route }: Props) => {
           );
         })}
       </View>
+      {winner && <ResultPoup type={typeWinner} navigation={navigation} />}
     </View>
   );
 };
