@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 import { rivalHelper } from "../helpers/revalHelper/revalHelper";
 import { getItem } from "../helpers/createField/CreateFieldHelper";
 import { winHelper } from "../helpers/winHelper/winHelper";
+import { Spinner } from "./Spinner";
 import { Field } from "./Field";
 import { View } from "./Themed";
 import { ResultPoup } from "../components/ResultPoup";
@@ -26,6 +27,9 @@ export const Game = ({ route, navigation }: Props) => {
   const [result, setResult] = useState(getItem());
   const [winner, setWinner] = useState(false);
   const [typeWinner, setTypeWinner] = useState("");
+  const [goSpinner, setGoSpinner] = useState(
+    gameType === "multiplay" ? true : false
+  );
 
   useEffect(() => {
     if (!winner) {
@@ -41,15 +45,18 @@ export const Game = ({ route, navigation }: Props) => {
         );
       }
 
-      if (!yourRun && !winner) {
+      if (!yourRun && !winner && gameType === "single") {
         rivalHelper(result, type, step, level);
         setYourRun(!yourRun);
       }
     }
-  }, [yourRun]);
+  }, [yourRun, goSpinner]);
 
   return (
     <View style={styles.container}>
+      {goSpinner && (
+        <Spinner animating={goSpinner} stopSpiner={() => setGoSpinner(false)} />
+      )}
       <View style={styles.wrapper}>
         {result.map((item: Field) => {
           return (

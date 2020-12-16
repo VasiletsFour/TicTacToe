@@ -14,11 +14,11 @@ export const GameSetting = ({ navigation }: Props) => {
   const [type, setType] = useState<"X" | "O" | "Any">("X");
 
   const handelStart = () => {
-    if (gameType === "single") {
-      navigation.navigate("Game", { gameType, type, level });
-    } else {
+    if (gameType !== "single") {
       getIpHelper().then((data: any) => newUserSocket(data.ip, type));
     }
+
+    navigation.navigate("Game", { gameType, type, level });
   };
 
   return (

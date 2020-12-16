@@ -8,51 +8,76 @@ interface NewSocket extends Socket{
 }
 
 interface User{
-    ip:string
-    type:Type
+    [key:string]:{
+        oponent:string | null
+        field:string
+        type:Type
+    }
 }
 
 interface Type{
-    type:"X" | "O"| "Any"
+    type:"X" | "O"
 }
 
 export const app: Application = express();
 export const server = http.createServer(app);
 const io = socketIo(server)
-let activeUsers:Array<User> = new Array();
+const activeUsers = new Set();
+const userGameParams:User = {}
 
 io.on("connect", (socket: NewSocket) => {
     socket.on("userConnect", (ip: string, type:Type) => {
         socket.join(ip);
         socket.userIp = ip;
         socket.type = type
+        // activeUsers.add(ip);
         
-        const result = filterArr(ip)
+        userGameParams[ip] = {
+            oponent:null,
+            type:type,
+            field:null
+        }
         
-        result.length === 0 &&  activeUsers.push({ip, type})
+        console.log(userGameParams)
 
-        activeUsers.map((item:User)=>{if(item.ip === ip && item.type !== type)item.type = type })
-       
-        console.log(activeUsers)
+        for(let key in userGameParams){
+            if(userGameParams[key].oponent === null && userGameParams[key].type !== type){
+                userGameParams[key].oponent = ip
+                userGameParams[ip].oponent = key
+                break
+            }
+            console.log(userGameParams[key])
+        }
+
+        console.log(userGameParams)
+
     });
 
-    socket.on("check", (ip: string, arr:Array<User>) => {
-        filterArr(ip).length !==0 && sendMsg(ip, arr);
+    socket.on("run", (ip: string, field:string) => {
+        activeUsers.has(ip) && sendMsg(ip, field);
     });
 
     socket.on("disconnect user", () => {
-        filterArr(socket.userIp).length !== 0 && disconectUser(socket);
+        activeUsers.has(socket.userIp) && disconectUser(socket);
     });
 });
 
-const sendMsg = (ip: string, arr:Array<User>) => {
-    io.to(ip).emit(JSON.stringify(arr), true);
+const sendMsg = (ip: string, field:string) => {
+    let oponentIp
+    
+    for(let key in userGameParams){
+        if(key === ip ){
+           oponentIp =  userGameParams[key].oponent 
+            break
+        }
+    }
+
+    io.to(oponentIp).emit(field, true);
 };
 
 const disconectUser = (socket: NewSocket) => {
     socket.leave(socket.userIp);
-    const newUserActivate = activeUsers.filter((item:User)=> item.ip !==socket.userIp)
-    activeUsers = newUserActivate
+    delete userGameParams[socket.userIp]
+    activeUsers.delete(socket.userIp);
 };
 
-const filterArr =(ip:string)=> activeUsers.filter((item:User)=>item.ip === ip)
