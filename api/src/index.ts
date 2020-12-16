@@ -20,7 +20,7 @@ const createServer = () => {
             next();
         });
 
-        app.use("/api/auth", (req, res)=>res.send('work'));
+        app.use("/api/", (req, res)=>res.send('work'));
 
         server.listen(port, () => console.log(`Server run on port ${port}`));
     } catch (error) {

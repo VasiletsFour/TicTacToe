@@ -1,30 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Pressable, StyleSheet, Text, View, ViewStyle } from "react-native";
+import { disconnectSocket } from "../socket/socket";
 
 interface Props {
   type: string;
+  gameType: string;
   navigation: any;
 }
 
-export const ResultPoup = ({ type, navigation }: Props) => (
-  <View style={styles.container}>
-    <View style={styles.opacity}></View>
-    <View style={styles.wrapper}>
-      <View style={styles.blockTop}>
-        <Text style={[styles.text, styles.title]}>Game Over</Text>
-        <Text style={[styles.text]}>{type}</Text>
-      </View>
-      <View style={styles.blockBottom}>
-        <Pressable
-          style={styles.btn}
-          onPress={() => navigation.navigate("Menu")}
-        >
-          <Text style={[styles.text]}>Back to menu</Text>
-        </Pressable>
+export const ResultPoup = ({ type, gameType, navigation }: Props) => {
+  useEffect(() => {
+    gameType !== "single" && disconnectSocket();
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.opacity}></View>
+      <View style={styles.wrapper}>
+        <View style={styles.blockTop}>
+          <Text style={[styles.text, styles.title]}>Game Over</Text>
+          <Text style={[styles.text]}>{type}</Text>
+        </View>
+        <View style={styles.blockBottom}>
+          <Pressable
+            style={styles.btn}
+            onPress={() => navigation.navigate("Menu")}
+          >
+            <Text style={[styles.text]}>Back to menu</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

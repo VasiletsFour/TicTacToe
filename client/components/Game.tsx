@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { rivalHelper } from "../helpers/revalHelper/revalHelper";
 import { getItem } from "../helpers/createField/CreateFieldHelper";
+import { getIpHelper } from "../helpers/getIpHelper/getIpHelper";
 import { winHelper } from "../helpers/winHelper/winHelper";
 import { Spinner } from "./Spinner";
 import { Field } from "./Field";
 import { View } from "./Themed";
 import { ResultPoup } from "../components/ResultPoup";
+import { socket, run, check } from "../socket/socket";
 
 interface Props {
   route: any;
@@ -22,6 +24,7 @@ export interface Field {
 
 export const Game = ({ route, navigation }: Props) => {
   const { type, gameType, level } = route.params;
+  const [ip, setIp] = useState("");
   const [yourRun, setYourRun] = useState(type === "X" ? true : false);
   const [step, setStep] = useState(0);
   const [result, setResult] = useState(getItem());
@@ -35,6 +38,9 @@ export const Game = ({ route, navigation }: Props) => {
     if (!winner) {
       setStep(step + 1);
 
+      gameType !== "single" &&
+        getIpHelper().then((data: any) => setIp(data.ip));
+
       if (step > 4) {
         winHelper(
           step,
@@ -45,12 +51,30 @@ export const Game = ({ route, navigation }: Props) => {
         );
       }
 
-      if (!yourRun && !winner && gameType === "single") {
-        rivalHelper(result, type, step, level);
-        setYourRun(!yourRun);
+      if (!yourRun && !winner) {
+        gameType === "single" && rivalHelper(result, type, step, level);
+        gameType === "single" && setYourRun(!yourRun);
+
+        gameType !== "single" &&
+          check(ip, (res) => {
+            setResult(JSON.parse(res));
+            setYourRun(!yourRun);
+          });
       }
     }
   }, [yourRun, goSpinner]);
+
+  const handelPress = (item: any) => {
+    if (!item.value) {
+      item.value = type;
+      setResult(result);
+      gameType !== "single" && run(ip, JSON.stringify(result));
+
+      setYourRun(!yourRun);
+    } else {
+      alert("check another field");
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -64,20 +88,18 @@ export const Game = ({ route, navigation }: Props) => {
               key={item.index + " key"}
               title={item.value}
               style={fieldStyle(item.row, item.col)}
-              handelPress={() => {
-                if (!item.value) {
-                  item.value = type;
-                  setResult(result);
-                  setYourRun(!yourRun);
-                } else {
-                  alert("check another field");
-                }
-              }}
+              handelPress={() => yourRun && handelPress(item)}
             />
           );
         })}
       </View>
-      {winner && <ResultPoup type={typeWinner} navigation={navigation} />}
+      {winner && (
+        <ResultPoup
+          gameType={gameType}
+          type={typeWinner}
+          navigation={navigation}
+        />
+      )}
     </View>
   );
 };

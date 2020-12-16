@@ -4,19 +4,15 @@ import socketIo, { Socket } from "socket.io";
 
 interface NewSocket extends Socket{
     userIp:string
-    type:Type
+    type:"X"|"O"
 }
 
 interface User{
     [key:string]:{
         oponent:string | null
         field:string
-        type:Type
+        type:"X"|"O"
     }
-}
-
-interface Type{
-    type:"X" | "O"
 }
 
 export const app: Application = express();
@@ -26,11 +22,11 @@ const activeUsers = new Set();
 const userGameParams:User = {}
 
 io.on("connect", (socket: NewSocket) => {
-    socket.on("userConnect", (ip: string, type:Type) => {
+    socket.on("userConnect", (ip: string, type:"X"|"O") => {
         socket.join(ip);
         socket.userIp = ip;
         socket.type = type
-        // activeUsers.add(ip);
+        activeUsers.add(ip);
         
         userGameParams[ip] = {
             oponent:null,
@@ -38,19 +34,17 @@ io.on("connect", (socket: NewSocket) => {
             field:null
         }
         
-        console.log(userGameParams)
-
         for(let key in userGameParams){
             if(userGameParams[key].oponent === null && userGameParams[key].type !== type){
                 userGameParams[key].oponent = ip
                 userGameParams[ip].oponent = key
+
+                io.emit(ip, "start")
+                io.emit(key, "start")
+
                 break
             }
-            console.log(userGameParams[key])
         }
-
-        console.log(userGameParams)
-
     });
 
     socket.on("run", (ip: string, field:string) => {
@@ -64,15 +58,18 @@ io.on("connect", (socket: NewSocket) => {
 
 const sendMsg = (ip: string, field:string) => {
     let oponentIp
-    
+   
     for(let key in userGameParams){
         if(key === ip ){
-           oponentIp =  userGameParams[key].oponent 
+            oponentIp = userGameParams[key].oponent
+            userGameParams[oponentIp].field = field 
+            userGameParams[key].field = field
+            
+            io.emit(oponentIp, field)
+            
             break
         }
     }
-
-    io.to(oponentIp).emit(field, true);
 };
 
 const disconectUser = (socket: NewSocket) => {

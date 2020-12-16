@@ -2,16 +2,19 @@ import socketIOClient from "socket.io-client";
 
 const ENDPOINT = "http://127.0.0.1:3000";
 
-const socket = socketIOClient(ENDPOINT);
-
+export const socket = socketIOClient(ENDPOINT);
 export const newUserSocket = (ip: string, type:"X"| "O"|"Any") => {
     socket.emit("userConnect", ip, type);
 };
 
-export const check = (ip: string) => {
-    socket.emit(ip);
+export const run = (ip: string, jsonArr:string) => {
+    socket.emit("run", ip, jsonArr);
+};
+
+export const check = (ip: string, foo:(result:string)=>void) => {
+    socket.on(ip, (data:any)=>foo(data));
 };
 
 export const disconnectSocket = () => {
-    socket.emit("disconnect");
+    socket.emit("disconnect user");
 };
