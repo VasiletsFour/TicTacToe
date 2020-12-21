@@ -31,37 +31,84 @@ const easyLevel = (
 
 const mediumLevel = (arr: Array<Field>, rivalType: string) => {
   const randomNum = random(1, 0);
-  // if(oneStepToVictory(arr,rivalType)){
-  //   return null
-  // }
 
   if (randomNum && arr[4].value) {
-    return arr[4].value = rivalType;
+    return (arr[4].value = rivalType);
   } else {
-    for (let i = 1; i <= arr.length - 1; i += 2) {
-     
-      if (!arr[i].value) {
-        return arr[i].value = rivalType;
-      } 
-      if (arr[i].value === rivalType && arr[i + 2].value === rivalType) {
-        return arr[i - 1].value = rivalType;
-      }else{
-        return easyLevel(0,8,arr, rivalType) 
-      }
+    if (oneStepToVictory(arr, rivalType)) {
+      return null;
     }
+
+    return easyLevel(0, 8, arr, rivalType);
   }
 };
 
-const oneStepToVictory =(arr:Array<Field>, rivalType:string)=>{
-  for(let i =0; i<=arr.length-1;i++){
-    if(arr[i].value === rivalType && arr[i]===arr[i+1]){
-      arr[i+2].value = rivalType
+const oneStepToVictory = (arr: Array<Field>, rivalType: string) => {
+  for (let i = 0; i <= arr.length / 3 - 1; i += 3) {
+    debugger
+    if (
+      arr[i].value &&
+      arr[i].value !== rivalType &&
+      arr[i].value === arr[i + 1].value
+    ) {
+      arr[i + 2].value = rivalType === "X" ? "X" : "O";
 
-      return true
+      return true;
+    }
+    if (
+      arr[i + 1].value &&
+      arr[i + 1].value !== rivalType &&
+      arr[i + 1].value === arr[i + 2].value
+    ) {
+      arr[i].value = rivalType === "X" ? "X" : "O";
+
+      return true;
+    }
+
+    if (
+      arr[i].value &&
+      arr[i].value !== rivalType &&
+      arr[i].value === arr[i + 2].value
+    ) {
+      arr[i + 1].value = rivalType === "X" ? "X" : "O";
+
+      return true;
     }
   }
 
-  return false
-}
+  for (let i = 0; i <= arr.length / 3 - 1; i++) {
+    if (
+      arr[i].value &&
+      arr[i].value !== rivalType &&
+      arr[i].value === arr[i + 3].value
+    ) {
+      arr[i + 2].value = rivalType === "X" ? "X" : "O";
 
-const random = (min: number, max: number) =>Math.floor(Math.random() * (max - min) + min);
+      return true;
+    }
+    if (
+      arr[i].value &&
+      arr[i].value !== rivalType &&
+      arr[i].value === arr[i + 6].value
+    ) {
+      arr[i - 1].value = rivalType === "X" ? "X" : "O";
+
+      return true;
+    }
+
+    if (
+      arr[i].value &&
+      arr[i + 3].value !== rivalType &&
+      arr[i + 3].value === arr[i + 6].value
+    ) {
+      arr[i + 1].value = rivalType === "X" ? "X" : "O";
+
+      return true;
+    }
+  }
+  
+  return false;
+};
+
+const random = (min: number, max: number) =>
+  Math.floor(Math.random() * (max - min) + min);
