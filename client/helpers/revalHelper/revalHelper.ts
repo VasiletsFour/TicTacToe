@@ -44,7 +44,7 @@ const mediumLevel = (arr: Array<Field>, rivalType: string) => {
 };
 
 const oneStepToVictory = (arr: Array<Field>, rivalType: string) => {
-  for (let i = 0; i <= arr.length / 3 - 1; i += 3) {
+  for (let i = 0; i <= arr.length - 1; i += 3) {
     debugger
     if (
       arr[i].value &&
