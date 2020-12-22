@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
-import { rivalHelper } from "../helpers/revalHelper/revalHelper";
-import { getItem } from "../helpers/createField/CreateFieldHelper";
-import { getIpHelper } from "../helpers/getIpHelper/getIpHelper";
-import { winHelper } from "../helpers/winHelper/winHelper";
-import { Spinner } from "./Spinner";
-import { Field } from "./Field";
-import { View } from "./Themed";
 import { ResultPoup } from "../components/ResultPoup";
-import { socket, run, check } from "../socket/socket";
+import { getItem } from "../helpers/createField/CreateFieldHelper";
+import { getIpHelper, Ip } from "../helpers/getIpHelper/getIpHelper";
+import { rivalHelper } from "../helpers/revalHelper/revalHelper";
+import { winHelper } from "../helpers/winHelper/winHelper";
+import { check, run } from "../socket/socket";
+import { Field } from "./Field";
+import { Spinner } from "./Spinner";
+import { View } from "./Themed";
 
 interface Props {
   route: any;
@@ -33,13 +33,13 @@ export const Game = ({ route, navigation }: Props) => {
   const [goSpinner, setGoSpinner] = useState(
     gameType === "multiplay" ? true : false
   );
+  const [startMultiplay, setStartMultiplay] = useState(false);
 
   useEffect(() => {
     if (!winner) {
       setStep(step + 1);
 
-      gameType !== "single" &&
-        getIpHelper().then((data: any) => setIp(data.ip));
+      gameType !== "single" && getIpHelper().then((data: Ip) => setIp(data.ip));
 
       if (step > 4) {
         winHelper(
@@ -64,7 +64,7 @@ export const Game = ({ route, navigation }: Props) => {
     }
   }, [yourRun, goSpinner]);
 
-  const handelPress = (item: any) => {
+  const handelPress = (item: Field) => {
     if (!item.value) {
       item.value = type;
       setResult(result);
@@ -75,6 +75,8 @@ export const Game = ({ route, navigation }: Props) => {
       alert("check another field");
     }
   };
+
+  const stopSpiner = () => {};
 
   return (
     <View style={styles.container}>

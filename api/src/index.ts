@@ -3,9 +3,11 @@ import cors from "cors";
 import morgan from "morgan";
 import { app, server } from "./socket";
 
+require('dotenv').config()
+
 const createServer = () => {
     try {
-        const port = 3000;
+        const port = process.env.PORT;
 
         app.use(cors());
         app.use(morgan("dev"));

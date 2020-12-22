@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
-import { getIpHelper } from "../helpers/getIpHelper/getIpHelper";
+import { getIpHelper, Ip } from "../helpers/getIpHelper/getIpHelper";
+import { setMultiplay } from "../helpers/storage/storage";
 import { newUserSocket } from "../socket/socket";
 import { GameSettinTab } from "./GameSettingsTab";
 
@@ -15,7 +16,10 @@ export const GameSetting = ({ navigation }: Props) => {
 
   const handelStart = () => {
     if (gameType !== "single") {
-      getIpHelper().then((data: any) => newUserSocket(data.ip, type));
+      getIpHelper().then((data: Ip) => {
+        setMultiplay(true);
+        newUserSocket(data.ip, type);
+      });
     }
 
     navigation.navigate("Game", { gameType, type, level });
