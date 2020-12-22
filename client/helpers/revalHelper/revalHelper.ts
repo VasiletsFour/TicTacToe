@@ -45,9 +45,9 @@ const mediumLevel = (arr: Array<Field>, rivalType: string) => {
 
 const oneStepToVictory = (arr: Array<Field>, rivalType: string) => {
   for (let i = 0; i <= arr.length - 1; i += 3) {
-    debugger
     if (
       arr[i].value &&
+      !arr[i + 2].value &&
       arr[i].value !== rivalType &&
       arr[i].value === arr[i + 1].value
     ) {
@@ -57,6 +57,7 @@ const oneStepToVictory = (arr: Array<Field>, rivalType: string) => {
     }
     if (
       arr[i + 1].value &&
+      !arr[i].value &&
       arr[i + 1].value !== rivalType &&
       arr[i + 1].value === arr[i + 2].value
     ) {
@@ -67,6 +68,7 @@ const oneStepToVictory = (arr: Array<Field>, rivalType: string) => {
 
     if (
       arr[i].value &&
+      !arr[i + 1].value &&
       arr[i].value !== rivalType &&
       arr[i].value === arr[i + 2].value
     ) {
@@ -76,32 +78,35 @@ const oneStepToVictory = (arr: Array<Field>, rivalType: string) => {
     }
   }
 
-  for (let i = 0; i <= arr.length / 3 - 1; i++) {
+  for (let i = 0; i < 3; i++) {
     if (
       arr[i].value &&
+      !arr[i + 6].value &&
       arr[i].value !== rivalType &&
       arr[i].value === arr[i + 3].value
     ) {
-      arr[i + 2].value = rivalType === "X" ? "X" : "O";
+      arr[i + 6].value = rivalType === "X" ? "X" : "O";
 
       return true;
     }
     if (
       arr[i].value &&
+      !arr[i + 3].value &&
       arr[i].value !== rivalType &&
       arr[i].value === arr[i + 6].value
     ) {
-      arr[i - 1].value = rivalType === "X" ? "X" : "O";
+      arr[i + 3].value = rivalType === "X" ? "X" : "O";
 
       return true;
     }
 
     if (
-      arr[i].value &&
+      arr[i + 3].value &&
+      !arr[i].value  &&
       arr[i + 3].value !== rivalType &&
       arr[i + 3].value === arr[i + 6].value
     ) {
-      arr[i + 1].value = rivalType === "X" ? "X" : "O";
+      arr[i].value = rivalType === "X" ? "X" : "O";
 
       return true;
     }
