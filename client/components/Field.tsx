@@ -4,16 +4,18 @@ import { Pressable, StyleSheet, Text, View, ViewStyle } from "react-native";
 interface Props {
   title: string | number;
   handelPress: () => void;
-  style: ViewStyle;
+  styleProps: ViewStyle;
 }
 
-export const Field = ({ title, handelPress, style }: Props) => (
-  <View style={[style, styles.container]}>
+export const Field = ({ title, handelPress, styleProps }: Props) => (
+  <View style={[styleProps, styles.container]}>
     <Pressable onPress={handelPress}>
       {({ pressed }) => (
         <View style={styles.element}>
           <Text
-            style={pressed ? styles.press : title === "X" ? styles.x : styles.o}
+            style={
+              pressed ? styles.press : title === "X" ? styles.xEl : styles.oEl
+            }
           >
             {pressed ? "-" : title}
           </Text>
@@ -40,16 +42,18 @@ const styles = StyleSheet.create({
     fontSize: 100,
     padding: 0,
   },
-  x: {
-    color: "red",
+  xEl: {
+    color: "forestgreen",
     marginLeft: 40,
     marginBottom: 30,
+    fontWeight: 800,
     fontSize: 100,
   },
-  o: {
-    color: "blue",
+  oEl: {
+    color: "seagreen",
     marginLeft: 40,
     marginBottom: 30,
     fontSize: 100,
+    fontWeight: 800,
   },
 });

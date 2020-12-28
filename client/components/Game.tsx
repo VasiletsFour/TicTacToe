@@ -19,7 +19,7 @@ export interface Field {
   row: number;
   col: number;
   index: number;
-  value: string;
+  value: string | null;
 }
 
 export const Game = ({ route, navigation }: Props) => {
@@ -89,7 +89,7 @@ export const Game = ({ route, navigation }: Props) => {
             <Field
               key={item.index + " key"}
               title={item.value}
-              style={fieldStyle(item.row, item.col)}
+              styleProps={fieldStyle(item.row, item.col)}
               handelPress={() => yourRun && handelPress(item)}
             />
           );
