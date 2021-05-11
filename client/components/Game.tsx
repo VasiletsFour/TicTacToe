@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
-import { ResultPoup } from "../components/ResultPoup";
+import { ResultPoup } from "./ResultPoup";
 import { getItem } from "../helpers/createField/CreateFieldHelper";
 import { getIpHelper, Ip } from "../helpers/getIpHelper/getIpHelper";
 import { rivalHelper } from "../helpers/revalHelper/revalHelper";
@@ -19,21 +19,19 @@ export interface Field {
   row: number;
   col: number;
   index: number;
-  value: string | null;
+  value: string ;
 }
 
 export const Game = ({ route, navigation }: Props) => {
   const { type, gameType, level } = route.params;
   const [ip, setIp] = useState("");
-  const [yourRun, setYourRun] = useState(type === "X" ? true : false);
+  const [yourRun, setYourRun] = useState(type === "X");
   const [step, setStep] = useState(0);
   const [result, setResult] = useState(getItem());
   const [winner, setWinner] = useState(false);
   const [typeWinner, setTypeWinner] = useState("");
-  const [goSpinner, setGoSpinner] = useState(
-    gameType === "multiplay" ? true : false
-  );
-  const [startMultiplay, setStartMultiplay] = useState(false);
+  const [goSpinner, setGoSpinner] = useState(gameType === "multiply");
+  const [startMultiply, setStartMultiply] = useState(false);
 
   useEffect(() => {
     if (!winner) {
@@ -64,7 +62,7 @@ export const Game = ({ route, navigation }: Props) => {
     }
   }, [yourRun, goSpinner]);
 
-  const handelPress = (item: Field) => {
+  const handlePress = (item: Field) => {
     if (!item.value) {
       item.value = type;
       setResult(result);
@@ -76,7 +74,7 @@ export const Game = ({ route, navigation }: Props) => {
     }
   };
 
-  const stopSpiner = () => {};
+  const stopSpinner = () => {};
 
   return (
     <View style={styles.container}>
@@ -90,7 +88,7 @@ export const Game = ({ route, navigation }: Props) => {
               key={item.index + " key"}
               title={item.value}
               styleProps={fieldStyle(item.row, item.col)}
-              handelPress={() => yourRun && handelPress(item)}
+              handlePress={() => yourRun && handlePress(item)}
             />
           );
         })}

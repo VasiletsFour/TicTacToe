@@ -134,7 +134,7 @@ const oneStepToVictory = (arr: Array<Field>, rivalType: string) => {
       return true;
     }
   }
-  
+
   return false;
 };
 

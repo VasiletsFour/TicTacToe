@@ -6,9 +6,9 @@ import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import useCachedResources from "./hooks/useCachedResources";
 import { GameScreen } from "./screens/GameScreen";
+import { GameSettingScreen } from "./screens/GameSettingScreen";
 import { MenuScreen } from "./screens/MenuScreen";
 import { SettingScreen } from "./screens/SettingScreen";
-import { GameSettingScreen } from "./screens/GameSettingScreen";
 
 const Stack = createStackNavigator();
 

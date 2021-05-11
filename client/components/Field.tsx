@@ -1,29 +1,37 @@
+import { BungeeOutline_400Regular, useFonts } from "@expo-google-fonts/dev";
+import { AppLoading } from "expo";
 import React from "react";
 import { Pressable, StyleSheet, Text, View, ViewStyle } from "react-native";
 
 interface Props {
   title: string | number;
-  handelPress: () => void;
+  handlePress: () => void;
   styleProps: ViewStyle;
 }
 
-export const Field = ({ title, handelPress, styleProps }: Props) => (
-  <View style={[styleProps, styles.container]}>
-    <Pressable onPress={handelPress}>
-      {({ pressed }) => (
-        <View style={styles.element}>
-          <Text
-            style={
-              pressed ? styles.press : title === "X" ? styles.xEl : styles.oEl
-            }
-          >
-            {pressed ? "-" : title}
-          </Text>
-        </View>
-      )}
-    </Pressable>
-  </View>
-);
+export const Field = ({ title, handlePress, styleProps }: Props) => {
+  let [fontsLoaded] = useFonts({
+    BungeeOutline_400Regular,
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <View style={[styleProps, styles.container]}>
+        <Pressable onPress={handlePress}>
+          {({ pressed }) => (
+            <View style={styles.element}>
+              <Text style={styles.test}>
+                {pressed ? "-" : title}
+              </Text>
+            </View>
+          )}
+        </Pressable>
+      </View>
+    );
+  }
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -34,6 +42,13 @@ const styles = StyleSheet.create({
   element: {
     width: 150,
     height: 150,
+  },
+  test:{
+    fontFamily: "BungeeOutline_400Regular",
+    color: "forestgreen",
+    marginLeft: 30,
+    marginTop: -80,
+    fontSize: 120,
   },
   press: {
     color: "white",
